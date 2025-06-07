@@ -481,12 +481,15 @@ def update_application():
         
         # Run update script in background, detached from parent process
         # Use a new process group to avoid signal propagation when parent dies
-        process = subprocess.Popen([update_script], 
-                                 stdout=subprocess.PIPE, 
-                                 stderr=subprocess.PIPE,
-                                 cwd=script_dir,
-                                 start_new_session=True,  # Create new session (detach from terminal)
-                                 preexec_fn=os.setpgrp if hasattr(os, 'setpgrp') else None)  # New process group
+        try:
+            process = subprocess.Popen([update_script], 
+                                     stdout=subprocess.PIPE, 
+                                     stderr=subprocess.PIPE,
+                                     cwd=script_dir,
+                                     start_new_session=True)  # Create new session (detach from terminal)
+        except Exception as e:
+            app.logger.error(f"Failed to start update process: {e}")
+            return jsonify({'success': False, 'message': f'Failed to start update process: {str(e)}'}), 500
         
         app.logger.info("Update process started")
         return jsonify({'success': True, 'message': 'Update process initiated. Application will restart if updates are available.'}), 200
