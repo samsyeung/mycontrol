@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2025-01-06
+
+### Changed
+- **Improved default settings** - Better out-of-box user experience
+  - Auto-refresh now defaults to "Off" instead of 30 seconds for better user control
+  - Updated configuration template to reflect new defaults
+- **Enhanced interface layout** - Improved button positioning and visual hierarchy
+  - Moved Update button to the left of Refresh button for better prominence
+  - Adjusted button spacing and margins for cleaner appearance
+- **Updated documentation** - Refreshed visual assets
+  - Updated main dashboard screenshot with latest interface improvements
+  - Screenshots now reflect current "My Lab Control" branding and features
+
 ## [1.3.0] - 2025-01-06
 
 ### Enhanced

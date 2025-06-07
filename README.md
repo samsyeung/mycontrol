@@ -127,7 +127,7 @@ Then edit `config.json` with your actual server details. See `config.json.exampl
 ### Configuration Options
 
 - `port`: Web server listening port (default: 5010)
-- `refresh_interval`: Auto-refresh interval in seconds (default: 30)
+- `refresh_interval`: Auto-refresh interval in seconds (default: 0 - Off)
 - `ssh_timeout`: SSH connection timeout in seconds (default: 10)
 - `ttyd_base_port`: Base port for SSH terminals (default: 7681)
 - `local_hostname`: Hostname for terminal URLs (default: system hostname)
