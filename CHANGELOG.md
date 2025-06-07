@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2025-01-06
+
+### Changed
+- **Application rebranding** - Updated title and branding throughout interface
+  - Changed application title from "MyControl - Host Power Status Monitor" to "My Lab Control"
+  - Added 🖥️ computer/server emoji icon as favicon and in header
+  - Updated version display to reflect new application name
+- **Enhanced host information display** - Improved visibility of connection details
+  - Show both IPMI and SSH host addresses in host cards
+  - Color-coded host types: IPMI (orange) and SSH (green) for easy identification
+  - Maintained backward compatibility with existing JavaScript functionality
+- **Streamlined interface** - Cleaner and more professional layout
+  - Removed redundant "Host Status" heading for cleaner appearance
+  - Enhanced visual hierarchy with improved spacing and typography
+  - Monospace font for technical host details
+
 ## [1.2.1] - 2025-01-06
 
 ### Added

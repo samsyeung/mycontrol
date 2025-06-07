@@ -139,10 +139,11 @@ def index():
         
         host_status.append({
             'name': name,
-            'hostname': ipmi_host or ssh_host,
+            'hostname': ipmi_host or ssh_host,  # Keep for backwards compatibility
+            'ipmi_host': ipmi_host,
+            'ssh_host': ssh_host,
             'status': power_status,
             'uptime': 'Loading...',  # Will be updated via AJAX
-            'ssh_host': ssh_host  # Include for client-side uptime fetching
         })
     
     refresh_interval = config.get('refresh_interval', 30)

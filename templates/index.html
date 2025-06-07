@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyControl - Host Power Status</title>
+    <title>My Lab Control</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="header-section">
-            <h1>Host Power Status Monitor</h1>
+            <h1>🖥️ My Lab Control</h1>
             <div class="refresh-container">
                 <button class="refresh-btn" onclick="window.location.reload()">Refresh</button>
                 <button class="update-btn" onclick="updateApplication(this)" title="Pull updates and restart if changes available">Update</button>
@@ -28,15 +29,18 @@
         </div>
         
         <div class="hosts-section">
-            <h2>Host Status</h2>
             {% if hosts %}
                 <div class="host-grid">
                     {% for host in hosts %}
-                    <div class="host-card">
+                    <div class="host-card" data-hostname="{{ host.hostname }}">
                         <div class="host-header">
                             <div class="host-info">
                                 <div class="host-name">{{ host.name }}</div>
-                                <div class="host-hostname">{{ host.hostname }}</div>
+                                <div class="host-details">
+                                    {% if host.ipmi_host %}<div class="host-ipmi">IPMI: {{ host.ipmi_host }}</div>{% endif %}
+                                    {% if host.ssh_host %}<div class="host-ssh">SSH: {{ host.ssh_host }}</div>{% endif %}
+                                </div>
+                                <div class="host-hostname" style="display: none;">{{ host.hostname }}</div>
                             </div>
                             <div class="terminal-buttons">
                                 <button class="ssh-btn-small" onclick="openSSHTerminal('{{ host.hostname }}', this)" title="Open SSH Terminal">
@@ -125,7 +129,7 @@
                 </div>
                 
                 <div class="version-info">
-                    MyControl {{ version }}
+                    My Lab Control {{ version }}
                     {% if build_info %}
                     <span class="build-info" title="{{ build_info }}">ⓘ</span>
                     {% endif %}
