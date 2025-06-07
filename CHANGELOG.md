@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2025-01-06
+
+### Added
+- **Version system** - Comprehensive git-based version tracking and display
+  - `libs/version.py` module for extracting version from git tags and commits
+  - Smart versioning with tag-based releases and development builds
+  - Dirty state detection for uncommitted changes
+  - Web interface version display at bottom of page with build info tooltip
+  - `/api/version` endpoint for programmatic version access
+  - Automatic VERSION file generation on startup and updates
+  - Integration with control.sh and update.sh scripts
+
+### Enhanced
+- **Version Display** - Professional version information throughout application
+  - Git tag-based versioning (e.g., v1.2.1)
+  - Development version tracking (e.g., v1.2.0+3.abc1234-dirty)
+  - Branch, commit count, and date information
+  - Build traceability for deployment management
+
 ## [1.2.0] - 2025-01-06
 
 ### Added

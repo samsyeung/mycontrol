@@ -308,6 +308,7 @@ Logs are stored in the `logs/` directory:
 - `GET /api/nvtop-terminals` - List active nvtop terminals
 - `POST /api/nvtop-stop/<hostname>` - Stop nvtop terminal for a host
 - `POST /api/update` - Pull git updates and restart application if changes detected
+- `GET /api/version` - Get application version and build information
 
 ## Process Management
 

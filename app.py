@@ -16,6 +16,7 @@ from libs.network_utils import check_host_ping
 from libs.gpu_management import get_gpu_info_sync, get_gpu_topo_info_sync, get_docker_info_sync, parse_docker_output_to_html, docker_action_sync
 from libs.terminal_management import TerminalManager
 from libs.config_utils import load_config, find_host_by_hostname, get_local_hostname
+from libs.version import get_version, get_version_info, get_build_info
 
 class DeduplicatingHandler(logging.Handler):
     """A logging handler that prevents duplicate log messages"""
@@ -146,7 +147,12 @@ def index():
     
     refresh_interval = config.get('refresh_interval', 30)
     
-    return render_template('index.html', hosts=host_status, grafana_dashboards=updated_dashboards, refresh_interval=refresh_interval)
+    return render_template('index.html', 
+                          hosts=host_status, 
+                          grafana_dashboards=updated_dashboards, 
+                          refresh_interval=refresh_interval,
+                          version=get_version(),
+                          build_info=get_build_info())
 
 @app.route('/api/status')
 def api_status():
@@ -484,6 +490,26 @@ def update_application():
     except Exception as e:
         app.logger.error(f"Failed to start update process: {e}")
         return jsonify({'success': False, 'message': f'Failed to start update: {str(e)}'}), 500
+
+@app.route('/api/version')
+def api_version():
+    """Get application version information"""
+    try:
+        version_info = get_version_info()
+        return jsonify({
+            'success': True,
+            'version': version_info['version'],
+            'tag': version_info['tag'],
+            'revision': version_info['revision'],
+            'branch': version_info['branch'],
+            'commit_count': version_info['commit_count'],
+            'commit_date': version_info['commit_date'],
+            'is_dirty': version_info['is_dirty'],
+            'build_info': version_info['build_info']
+        }), 200
+    except Exception as e:
+        app.logger.error(f"Failed to get version info: {e}")
+        return jsonify({'success': False, 'message': f'Failed to get version: {str(e)}'}), 500
 
 if __name__ == '__main__':
     config = load_config()

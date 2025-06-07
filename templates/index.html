@@ -123,6 +123,13 @@
                 <div class="last-updated">
                     Last updated: <span id="timestamp"></span>
                 </div>
+                
+                <div class="version-info">
+                    MyControl {{ version }}
+                    {% if build_info %}
+                    <span class="build-info" title="{{ build_info }}">ⓘ</span>
+                    {% endif %}
+                </div>
             {% else %}
                 <div style="text-align: center; color: #666; margin: 50px 0;">
                     <p>No hosts configured. Please check your config.json file.</p>

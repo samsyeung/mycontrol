@@ -93,6 +93,15 @@ COMMIT_MESSAGE=$(git log --format="%s" -n 1 HEAD)
 log "Updated to commit: $NEW_COMMIT"
 log "Latest change: $COMMIT_MESSAGE"
 
+# Update version information
+log "Updating version information..."
+if [ -d "venv" ]; then
+    source venv/bin/activate
+    python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
+else
+    python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
+fi
+
 # Apply stashed changes if any
 if [ "$STASHED" = true ]; then
     log "Reapplying stashed changes..."
