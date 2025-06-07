@@ -21,6 +21,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # View application logs
 ./control.sh logs
 
+# Update application (check git and restart if needed)
+./update.sh
+
 # Manual startup (alternative)
 python app.py
 
@@ -69,6 +72,7 @@ cp config.json.example config.json
 - **Docker Management**: Container status monitoring and control
 - **Web Terminals**: Browser-based SSH and nvtop access via ttyd
 - **Dashboard Integration**: Embedded Grafana charts
+- **Auto-Update System**: One-click git pull and restart functionality
 
 ### Security Model
 - **Remote terminal access**: ttyd services bound to 0.0.0.0 for remote browser connectivity
@@ -81,6 +85,7 @@ cp config.json.example config.json
 - **Power Control**: `/api/power-on/<hostname>`
 - **Terminal Management**: `/api/ssh-terminal/<hostname>`, `/api/nvtop-terminal/<hostname>`
 - **Infrastructure**: `/api/gpu-info/<hostname>`, `/api/docker-info/<hostname>`
+- **System Management**: `/api/update` (git pull and restart)
 
 ### Process Management
 The `control.sh` script provides:
@@ -88,6 +93,13 @@ The `control.sh` script provides:
 - Background process management with PID tracking
 - Log rotation (10MB max, 5 backups)
 - Port configuration extraction from config.json
+
+The `update.sh` script provides:
+- Automated git updates with change detection
+- Dependency management when requirements.txt changes
+- Git stash handling for uncommitted changes
+- Application restart only when updates are available
+- Comprehensive update logging
 
 ### Configuration System
 - **JSON-based** with `config.json.example` template

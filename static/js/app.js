@@ -644,3 +644,52 @@ function loadPingStatus() {
         console.log('All ping status information loaded');
     });
 }
+
+// Update application function
+function updateApplication(button) {
+    // Disable button and show updating state
+    const originalText = button.textContent;
+    button.textContent = 'Updating...';
+    button.disabled = true;
+    button.classList.add('updating');
+    
+    // Call update API
+    fetch('/api/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            button.textContent = 'Update Started';
+            
+            // Show info message to user
+            alert('Update process started. The application will restart automatically if updates are available. Please wait a few moments and refresh the page.');
+            
+            // Auto-refresh after a delay to see if app restarted
+            setTimeout(() => {
+                window.location.reload();
+            }, 10000); // Wait 10 seconds then refresh
+        } else {
+            // Show error message
+            alert('Update failed: ' + data.message);
+            
+            // Reset button
+            button.textContent = originalText;
+            button.disabled = false;
+            button.classList.remove('updating');
+        }
+    })
+    .catch(error => {
+        console.error('Update error:', error);
+        alert('Update failed: Network error');
+        
+        // Reset button
+        button.textContent = originalText;
+        button.disabled = false;
+        button.classList.remove('updating');
+    });
+}

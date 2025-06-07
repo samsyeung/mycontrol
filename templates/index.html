@@ -12,6 +12,7 @@
             <h1>Host Power Status Monitor</h1>
             <div class="refresh-container">
                 <button class="refresh-btn" onclick="window.location.reload()">Refresh</button>
+                <button class="update-btn" onclick="updateApplication(this)" title="Pull updates and restart if changes available">Update</button>
                 <div class="refresh-selector">
                     <label for="refresh-interval">Auto-refresh:</label>
                     <select id="refresh-interval" onchange="updateRefreshInterval()">

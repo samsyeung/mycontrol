@@ -93,6 +93,7 @@ Live GPU monitoring through dedicated terminal windows:
 - **Integrated Dashboards**: Embedded Grafana charts for additional system metrics
 - **Comprehensive Control**: Power management, container control, and terminal access
 - **Multi-host Support**: Manage multiple servers from a single interface
+- **Auto-Update Capability**: One-click git pull and restart functionality
 
 ## Setup
 
@@ -238,6 +239,21 @@ brew install sshpass
 ./control.sh logs     # Show and follow application logs
 ```
 
+### Update Management
+
+The application includes an automated update system:
+
+```bash
+./update.sh          # Check for updates and restart if changes available
+```
+
+**Web Interface Update Button:**
+- Click the "Update" button next to the refresh button in the web interface
+- Automatically pulls latest changes from git repository
+- Restarts the application only if updates are detected
+- Shows progress feedback and handles errors gracefully
+- Update logs are stored in `logs/update.log`
+
 ### Manual Usage
 
 ```bash
@@ -291,6 +307,7 @@ Logs are stored in the `logs/` directory:
 - `POST /api/nvtop-terminal/<hostname>` - Start nvtop terminal for a host
 - `GET /api/nvtop-terminals` - List active nvtop terminals
 - `POST /api/nvtop-stop/<hostname>` - Stop nvtop terminal for a host
+- `POST /api/update` - Pull git updates and restart application if changes detected
 
 ## Process Management
 

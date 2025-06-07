@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2025-01-06
+
+### Added
+- **Auto-update functionality** - One-click git pull and application restart
+  - `update.sh` script for automated git updates and dependency management
+  - Update button in web interface next to refresh button
+  - `/api/update` endpoint for triggering updates via web interface
+  - Comprehensive update logging to `logs/update.log`
+  - Smart update detection - only restarts if changes are available
+  - Automatic dependency updates when `requirements.txt` changes
+  - Git stash handling for uncommitted local changes
+
+### Enhanced
+- **Web Interface** - Improved header controls and user experience
+  - Green "Update" button with visual feedback states
+  - Progress indicators during update process
+  - User-friendly status messages and error handling
+  - Auto-refresh after successful updates
+
+### Documentation
+- Added update management section to README
+- Updated API documentation with new update endpoint
+- Enhanced feature list with auto-update capability
+
 ## [1.1.0] - 2025-01-06
 
 ### Added

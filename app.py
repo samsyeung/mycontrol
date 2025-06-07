@@ -456,6 +456,35 @@ def stop_nvtop_terminal(hostname):
     result = get_terminal_manager().stop_nvtop_terminal(hostname)
     return jsonify(result)
 
+@app.route('/api/update', methods=['POST'])
+def update_application():
+    """Trigger application update via git pull and restart"""
+    try:
+        import subprocess
+        import os
+        
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        update_script = os.path.join(script_dir, 'update.sh')
+        
+        if not os.path.exists(update_script):
+            return jsonify({'success': False, 'message': 'Update script not found'}), 500
+        
+        if not os.access(update_script, os.X_OK):
+            return jsonify({'success': False, 'message': 'Update script is not executable'}), 500
+        
+        # Run update script in background
+        process = subprocess.Popen([update_script], 
+                                 stdout=subprocess.PIPE, 
+                                 stderr=subprocess.PIPE,
+                                 cwd=script_dir)
+        
+        app.logger.info("Update process started")
+        return jsonify({'success': True, 'message': 'Update process initiated. Application will restart if updates are available.'}), 200
+        
+    except Exception as e:
+        app.logger.error(f"Failed to start update process: {e}")
+        return jsonify({'success': False, 'message': f'Failed to start update: {str(e)}'}), 500
+
 if __name__ == '__main__':
     config = load_config()
     port = config.get('port', 5010)
