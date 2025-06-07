@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 2025-01-08
+
+### Fixed
+- **Web update compatibility** - Resolved subprocess creation error on web interface
+  - Removed problematic `preexec_fn` parameter causing "Exception occurred in preexec_fn" errors
+  - Improved cross-platform compatibility for web-triggered updates
+  - Enhanced error handling for subprocess creation with better error reporting
+  - Maintained process isolation using `start_new_session=True` for reliable updates
+
 ## [1.4.0] - 2025-01-08
 
 ### Fixed
