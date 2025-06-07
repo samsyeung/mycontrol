@@ -145,6 +145,11 @@ fi
 if [ -f "./control.sh" ]; then
     if [ "$APP_WAS_RUNNING" = true ]; then
         log "Restarting application (was running before update)..."
+        
+        # Add a small delay to ensure any web response is sent before restart
+        # This helps prevent issues when update is triggered from web interface
+        sleep 2
+        
         ./control.sh restart
         if [ $? -eq 0 ]; then
             log "Application successfully updated and restarted!"

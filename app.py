@@ -479,11 +479,14 @@ def update_application():
         if not os.access(update_script, os.X_OK):
             return jsonify({'success': False, 'message': 'Update script is not executable'}), 500
         
-        # Run update script in background
+        # Run update script in background, detached from parent process
+        # Use a new process group to avoid signal propagation when parent dies
         process = subprocess.Popen([update_script], 
                                  stdout=subprocess.PIPE, 
                                  stderr=subprocess.PIPE,
-                                 cwd=script_dir)
+                                 cwd=script_dir,
+                                 start_new_session=True,  # Create new session (detach from terminal)
+                                 preexec_fn=os.setpgrp if hasattr(os, 'setpgrp') else None)  # New process group
         
         app.logger.info("Update process started")
         return jsonify({'success': True, 'message': 'Update process initiated. Application will restart if updates are available.'}), 200

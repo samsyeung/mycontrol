@@ -667,12 +667,10 @@ function updateApplication(button) {
             button.textContent = 'Update Started';
             
             // Show info message to user
-            alert('Update process started. The application will restart automatically if updates are available. Please wait a few moments and refresh the page.');
+            alert('Update process started. The application will restart automatically if updates are available. The page will automatically check for restart completion.');
             
-            // Auto-refresh after a delay to see if app restarted
-            setTimeout(() => {
-                window.location.reload();
-            }, 10000); // Wait 10 seconds then refresh
+            // Start checking if app is back up after restart
+            checkAppRestart(button, originalText);
         } else {
             // Show error message
             alert('Update failed: ' + data.message);
@@ -692,4 +690,55 @@ function updateApplication(button) {
         button.disabled = false;
         button.classList.remove('updating');
     });
+}
+
+// Check if application has restarted after update
+function checkAppRestart(button, originalText) {
+    let attempts = 0;
+    const maxAttempts = 30; // Try for up to 60 seconds (30 * 2 seconds)
+    
+    function pingApp() {
+        attempts++;
+        
+        // Update button text to show progress
+        button.textContent = `Checking... (${attempts}/${maxAttempts})`;
+        
+        fetch('/api/version', { 
+            method: 'GET',
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // App is back up!
+                button.textContent = 'Update Complete';
+                button.classList.remove('updating');
+                
+                // Reload the page to show any changes
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                throw new Error('App not ready');
+            }
+        })
+        .catch(error => {
+            if (attempts < maxAttempts) {
+                // Try again in 2 seconds
+                setTimeout(pingApp, 2000);
+            } else {
+                // Give up and reset button
+                button.textContent = 'Update Timeout';
+                button.disabled = false;
+                button.classList.remove('updating');
+                
+                alert('Update may have completed, but the application took longer than expected to restart. Please refresh the page manually.');
+            }
+        });
+    }
+    
+    // Start checking after a short delay to allow the update to begin
+    setTimeout(pingApp, 5000);
 }
