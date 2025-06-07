@@ -50,6 +50,18 @@ if [ ! -d ".git" ]; then
     error "Not in a git repository. Cannot update."
 fi
 
+# Check if application is currently running
+APP_WAS_RUNNING=false
+if [ -f "./control.sh" ]; then
+    ./control.sh status >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        APP_WAS_RUNNING=true
+        log "Application is currently running"
+    else
+        log "Application is not running"
+    fi
+fi
+
 # Get current commit hash
 CURRENT_COMMIT=$(git rev-parse HEAD)
 log "Current commit: $CURRENT_COMMIT"
@@ -67,6 +79,14 @@ log "Latest remote commit: $LATEST_COMMIT"
 # Check if there are changes
 if [ "$CURRENT_COMMIT" = "$LATEST_COMMIT" ]; then
     info "No updates available. Application is already up to date."
+    # Still update version file to ensure it's clean
+    log "Updating version file to ensure clean state..."
+    if [ -d "venv" ]; then
+        source venv/bin/activate
+        python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
+    else
+        python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
+    fi
     exit 0
 fi
 
@@ -93,15 +113,6 @@ COMMIT_MESSAGE=$(git log --format="%s" -n 1 HEAD)
 log "Updated to commit: $NEW_COMMIT"
 log "Latest change: $COMMIT_MESSAGE"
 
-# Update version information
-log "Updating version information..."
-if [ -d "venv" ]; then
-    source venv/bin/activate
-    python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
-else
-    python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
-fi
-
 # Apply stashed changes if any
 if [ "$STASHED" = true ]; then
     log "Reapplying stashed changes..."
@@ -121,16 +132,31 @@ if git diff --name-only "$CURRENT_COMMIT" HEAD | grep -q "requirements.txt"; the
     fi
 fi
 
-# Restart the application
-log "Restarting MyControl application..."
+# Update version information (force refresh to get clean version)
+log "Updating version information..."
+if [ -d "venv" ]; then
+    source venv/bin/activate
+    python -c "from libs.version import refresh_version, write_version_file; refresh_version(); write_version_file()" 2>/dev/null || true
+else
+    python -c "from libs.version import refresh_version, write_version_file; refresh_version(); write_version_file()" 2>/dev/null || true
+fi
+
+# Handle application restart based on previous state
 if [ -f "./control.sh" ]; then
-    ./control.sh restart
-    if [ $? -eq 0 ]; then
-        log "MyControl successfully updated and restarted!"
-        log "Update completed: $CURRENT_COMMIT -> $NEW_COMMIT"
+    if [ "$APP_WAS_RUNNING" = true ]; then
+        log "Restarting application (was running before update)..."
+        ./control.sh restart
+        if [ $? -eq 0 ]; then
+            log "Application successfully updated and restarted!"
+            log "Update completed: $CURRENT_COMMIT -> $NEW_COMMIT"
+        else
+            error "Failed to restart application"
+        fi
     else
-        error "Failed to restart MyControl application"
+        log "Application was not running before update - leaving it stopped"
+        log "Update completed: $CURRENT_COMMIT -> $NEW_COMMIT"
+        log "To start the application, run: ./control.sh start"
     fi
 else
-    error "control.sh script not found. Cannot restart application."
+    error "control.sh script not found. Cannot manage application state."
 fi

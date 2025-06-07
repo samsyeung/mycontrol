@@ -100,9 +100,9 @@ start_app() {
     # Get configured port
     PORT=$(get_port)
     
-    # Generate version file
+    # Generate version file (force refresh to get clean version)
     log "Generating version information..."
-    python -c "from libs.version import write_version_file; write_version_file()" 2>/dev/null || true
+    python -c "from libs.version import refresh_version, write_version_file; refresh_version(); write_version_file()" 2>/dev/null || true
     
     # Start the application in background
     log "Starting Flask application on port $PORT..."
