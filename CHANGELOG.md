@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2025-01-08
+
+### Fixed
+- **Critical web update reliability** - Resolved process management issues with web-triggered updates
+  - Fixed update script termination when triggered from web interface
+  - Process isolation using new session and process group to prevent signal propagation
+  - Added timing delay to ensure web response completion before application restart
+  - Eliminated race conditions between Flask app termination and update script execution
+- **Enhanced hostname resolution** - Improved FQDN fallback logic
+  - Better fallback chain: config → valid FQDN → hostname → localhost
+  - Filter out reverse DNS results and invalid domain names
+  - More reliable terminal URL generation for remote access
+
+### Enhanced
+- **Intelligent update tracking** - Improved user experience during updates
+  - Smart restart detection using version API endpoint instead of fixed timeout
+  - Progressive feedback showing update progress and restart status
+  - Automatic page refresh once application restart is confirmed
+  - Better error handling and timeout management for update process
+
 ## [1.3.1] - 2025-01-06
 
 ### Changed

@@ -252,7 +252,9 @@ The application includes an automated update system:
 - Automatically pulls latest changes from git repository
 - **Smart restart logic**: Only restarts if the application was running before update
 - **State preservation**: Stopped applications remain stopped with clear instructions
-- Shows progress feedback and handles errors gracefully
+- **Reliable process handling**: Update process survives application restarts
+- **Intelligent restart detection**: Monitors application status and auto-refreshes page
+- Shows progressive feedback and handles errors gracefully
 - Update logs are stored in `logs/update.log`
 - **Clean version tracking**: No false "-dirty" indicators after updates
 
