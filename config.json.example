@@ -3,6 +3,7 @@
   "refresh_interval": 30,
   "ssh_timeout": 10,
   "ttyd_base_port": 7681,
+  "local_hostname": "mycontrol.example.com",
   "ipmitool_path": "ipmitool",
   "nvtop_path": "nvtop",
   "sshpass_path": "sshpass",

@@ -2,6 +2,7 @@
 
 import json
 import logging
+import socket
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -25,3 +26,15 @@ def find_host_by_hostname(hosts, hostname):
         if host.get('ipmi_host') == hostname or host.get('ssh_host') == hostname:
             return host
     return None
+
+def get_local_hostname(config):
+    """Get the local hostname for terminal URLs, with fallback to system hostname"""
+    local_hostname = config.get('local_hostname')
+    if local_hostname:
+        return local_hostname
+    
+    try:
+        return socket.gethostname()
+    except Exception as e:
+        logger.warning(f"Failed to get system hostname: {e}")
+        return 'localhost'

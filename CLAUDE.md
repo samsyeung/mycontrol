@@ -71,7 +71,7 @@ cp config.json.example config.json
 - **Dashboard Integration**: Embedded Grafana charts
 
 ### Security Model
-- **Localhost-only terminal binding**: ttyd services bound to 127.0.0.1
+- **Remote terminal access**: ttyd services bound to 0.0.0.0 for remote browser connectivity
 - **Manual authentication**: No stored SSH credentials
 - **Configuration protection**: config.json excluded from version control
 - **Process isolation**: Background daemon with proper PID management
@@ -94,6 +94,7 @@ The `control.sh` script provides:
 - **Multi-host support** with individual IPMI/SSH credentials
 - **Configurable timeouts** for SSH and network operations
 - **Tool path configuration** for ipmitool, nvtop, sshpass, ttyd
+- **Remote access configuration** with `local_hostname` for terminal URLs
 - **Optional Grafana integration** with dashboard URL configuration
 
 ### Dependencies

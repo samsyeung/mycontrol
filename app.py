@@ -15,7 +15,7 @@ from libs.power_management import get_power_status, power_on_host
 from libs.network_utils import check_host_ping
 from libs.gpu_management import get_gpu_info_sync, get_gpu_topo_info_sync, get_docker_info_sync, parse_docker_output_to_html, docker_action_sync
 from libs.terminal_management import TerminalManager
-from libs.config_utils import load_config, find_host_by_hostname
+from libs.config_utils import load_config, find_host_by_hostname, get_local_hostname
 
 class DeduplicatingHandler(logging.Handler):
     """A logging handler that prevents duplicate log messages"""
@@ -105,7 +105,8 @@ def get_terminal_manager():
     if terminal_manager is None:
         config = load_config()
         ttyd_base_port = config.get('ttyd_base_port', 7681)
-        terminal_manager = TerminalManager(ttyd_base_port)
+        local_hostname = get_local_hostname(config)
+        terminal_manager = TerminalManager(ttyd_base_port, local_hostname)
     return terminal_manager
 
 

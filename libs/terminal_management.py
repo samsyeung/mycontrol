@@ -14,8 +14,9 @@ logger = logging.getLogger('app')
 class TerminalManager:
     """Manages ttyd terminal processes"""
     
-    def __init__(self, ttyd_base_port=7681):
+    def __init__(self, ttyd_base_port=7681, local_hostname='localhost'):
         self.ttyd_base_port = ttyd_base_port
+        self.local_hostname = local_hostname
         self.ssh_processes = {}
         self.nvtop_processes = {}
     
@@ -60,7 +61,7 @@ class TerminalManager:
             cmd = [
                 'ttyd',
                 '--port', str(terminal_port),
-                '--interface', '127.0.0.1',  # Only bind to localhost for security
+                '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
                 '--once',  # Close after one client disconnects
                 '--writable',  # Allow keyboard input
                 'ssh', 
@@ -96,7 +97,7 @@ class TerminalManager:
             
             return {
                 'success': True,
-                'terminal_url': f'http://localhost:{terminal_port}',
+                'terminal_url': f'http://{self.local_hostname}:{terminal_port}',
                 'message': 'SSH terminal started successfully'
             }
             
@@ -136,7 +137,7 @@ export SSHPASS='{ssh_password}'
                 cmd = [
                     'ttyd',
                     '--port', str(nvtop_port),
-                    '--interface', '127.0.0.1',  # Only bind to localhost for security
+                    '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
                     '--once',  # Close after one client disconnects
                     '/bin/bash', script_path
                 ]
@@ -145,7 +146,7 @@ export SSHPASS='{ssh_password}'
                 cmd = [
                     'ttyd',
                     '--port', str(nvtop_port),
-                    '--interface', '127.0.0.1',  # Only bind to localhost for security
+                    '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
                     '--once',  # Close after one client disconnects
                     'ssh',
                     '-t',
@@ -183,7 +184,7 @@ export SSHPASS='{ssh_password}'
             
             return {
                 'success': True,
-                'terminal_url': f'http://localhost:{nvtop_port}',
+                'terminal_url': f'http://{self.local_hostname}:{nvtop_port}',
                 'message': 'nvtop terminal started successfully'
             }
             
@@ -215,7 +216,7 @@ export SSHPASS='{ssh_password}'
                         'hostname': hostname,
                         'port': process_dict[hostname]['port'],
                         'host': process_dict[hostname]['host'],
-                        'url': f"http://localhost:{process_dict[hostname]['port']}"
+                        'url': f"http://{self.local_hostname}:{process_dict[hostname]['port']}"
                     })
             except ProcessLookupError:
                 # Process is dead, remove it

@@ -129,6 +129,7 @@ Then edit `config.json` with your actual server details. See `config.json.exampl
 - `refresh_interval`: Auto-refresh interval in seconds (default: 30)
 - `ssh_timeout`: SSH connection timeout in seconds (default: 10)
 - `ttyd_base_port`: Base port for SSH terminals (default: 7681)
+- `local_hostname`: Hostname for terminal URLs (default: system hostname)
 - `ipmitool_path`: Path to ipmitool binary (default: "ipmitool")
 - `nvtop_path`: Path to nvtop binary on remote hosts (default: "nvtop")
 - `sshpass_path`: Path to sshpass binary for password-based SSH (default: "sshpass")
@@ -262,10 +263,11 @@ The application provides web-based SSH terminals through `ttyd`. Each host card 
 4. Terminal session will automatically close when you disconnect
 
 **Security Notes:**
-- Terminals are bound to localhost (127.0.0.1) for security
+- Terminals bind to all interfaces (0.0.0.0) to allow remote browser access
 - Each terminal requires manual SSH authentication
 - Sessions automatically terminate after client disconnect
 - No SSH credentials are stored or auto-filled
+- Configure `local_hostname` in config.json for proper remote access URLs
 
 ## Logging
 

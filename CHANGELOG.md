@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-01-06
+
+### Added
+- `local_hostname` configuration option for terminal URLs with automatic hostname detection
+- Support for remote browser access to SSH and nvtop terminals
+
+### Changed
+- Terminal services now bind to all interfaces (0.0.0.0) instead of localhost-only
+- Terminal URLs use configured hostname instead of hardcoded localhost
+- Improved remote access capability for web-based terminals
+
+### Fixed
+- Remote browsers can now properly connect to ttyd terminals
+- Terminal URLs correctly resolve to the server hostname for remote clients
+
 ## [0.7.1] - 2025-01-07
 
 ### Added
