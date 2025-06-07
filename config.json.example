@@ -1,6 +1,6 @@
 {
   "port": 5010,
-  "refresh_interval": 30,
+  "refresh_interval": 0,
   "ssh_timeout": 10,
   "ttyd_base_port": 7681,
   "local_hostname": "mycontrol.example.com",

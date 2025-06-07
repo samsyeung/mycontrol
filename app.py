@@ -146,7 +146,7 @@ def index():
             'uptime': 'Loading...',  # Will be updated via AJAX
         })
     
-    refresh_interval = config.get('refresh_interval', 30)
+    refresh_interval = config.get('refresh_interval', 0)
     
     return render_template('index.html', 
                           hosts=host_status, 
