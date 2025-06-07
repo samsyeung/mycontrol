@@ -96,10 +96,11 @@ The `control.sh` script provides:
 
 The `update.sh` script provides:
 - Automated git updates with change detection
+- Intelligent application state preservation (only restarts if previously running)
 - Dependency management when requirements.txt changes
 - Git stash handling for uncommitted changes
-- Application restart only when updates are available
-- Comprehensive update logging
+- Clean version file generation with cache refresh
+- Comprehensive update logging and user feedback
 
 ### Configuration System
 - **JSON-based** with `config.json.example` template

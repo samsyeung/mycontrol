@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2025-01-06
+
+### Enhanced
+- **Intelligent update system** - Major improvements to application update handling
+  - Application state preservation: Only restarts app if it was running before update
+  - Smart restart logic: Leaves stopped applications stopped with clear instructions
+  - Enhanced logging and user feedback about update process and state changes
+  - No-update scenarios properly handled with version file refresh
+- **Clean version tracking** - Resolved version display issues
+  - Excluded VERSION file from git tracking to prevent false dirty states
+  - Force refresh of version cache after git operations for accurate display
+  - Eliminated persistent "-dirty" suffixes when no actual changes exist
+  - VERSION file now shows accurate, clean version information
+
+### Fixed
+- Update script no longer unnecessarily restarts stopped applications
+- Version file displays clean state instead of permanent "-dirty" suffix
+- Application state detection and preservation during updates
+- Version cache refresh to show current git state accurately
+
 ## [1.2.2] - 2025-01-06
 
 ### Changed

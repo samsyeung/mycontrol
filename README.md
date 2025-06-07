@@ -250,9 +250,11 @@ The application includes an automated update system:
 **Web Interface Update Button:**
 - Click the "Update" button next to the refresh button in the web interface
 - Automatically pulls latest changes from git repository
-- Restarts the application only if updates are detected
+- **Smart restart logic**: Only restarts if the application was running before update
+- **State preservation**: Stopped applications remain stopped with clear instructions
 - Shows progress feedback and handles errors gracefully
 - Update logs are stored in `logs/update.log`
+- **Clean version tracking**: No false "-dirty" indicators after updates
 
 ### Manual Usage
 
