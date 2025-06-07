@@ -14,5 +14,8 @@ logs/
 # Process ID file
 *.pid
 
+# Version file (generated automatically)
+VERSION
+
 # macOS system files
 .DS_Store
