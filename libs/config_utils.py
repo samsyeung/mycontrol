@@ -28,13 +28,27 @@ def find_host_by_hostname(hosts, hostname):
     return None
 
 def get_local_hostname(config):
-    """Get the local hostname for terminal URLs, with fallback to system hostname"""
+    """Get the local hostname for terminal URLs, with fallback to FQDN then hostname"""
     local_hostname = config.get('local_hostname')
     if local_hostname:
         return local_hostname
     
     try:
-        return socket.gethostname()
+        # Try to get FQDN first (more useful for remote access)
+        fqdn = socket.getfqdn()
+        hostname = socket.gethostname()
+        
+        # Prefer FQDN if it's a proper domain name (not reverse DNS or localhost)
+        if (fqdn and fqdn != 'localhost' and '.' in fqdn and 
+            not fqdn.endswith('.arpa') and not fqdn.startswith('127.')):
+            return fqdn
+        
+        # Fallback to regular hostname
+        if hostname and hostname != 'localhost':
+            return hostname
+            
+        # Last resort
+        return 'localhost'
     except Exception as e:
         logger.warning(f"Failed to get system hostname: {e}")
         return 'localhost'
