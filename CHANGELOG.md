@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2025-01-08
+
+### Added
+- **Systemd service support** - Production-ready service deployment capabilities
+  - `mylabcontrol.service` systemd unit file with security hardening
+  - `install-service.sh` automated installation script for system service setup
+  - `uninstall-service.sh` clean removal script for complete service uninstallation
+  - Dedicated `mylabcontrol` user and group for secure service operation
+  - Service runs from `/opt/mylabcontrol` with proper file permissions and ownership
+  - Automatic restart on failure with 10-second delay for reliability
+  - Integration with systemd journal for centralized logging
+  - Security features: NoNewPrivileges, ProtectSystem, PrivateTmp, kernel protection
+  - Auto-start capability on system boot when enabled
+  - Support for standard systemctl management commands
+- **Enhanced documentation** - Comprehensive service deployment guidance
+  - Updated README.md with systemd service installation instructions
+  - `SERVICE.md` detailed service management and troubleshooting guide
+  - Complete service management command reference
+  - Troubleshooting section for common deployment issues
+
+### Enhanced
+- **Production deployment** - Professional system service capabilities
+  - Dedicated user isolation for improved security posture
+  - Automatic dependency installation and virtual environment management
+  - Systemd integration for proper process lifecycle management
+  - Update functionality preserved in service context with proper permissions
+  - Configuration management with secure file permissions
+
 ## [1.4.1] - 2025-01-08
 
 ### Fixed

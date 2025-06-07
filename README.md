@@ -114,6 +114,55 @@ pip install -r requirements.txt
 python app.py
 ```
 
+### Systemd Service Installation (Production)
+
+For production deployments, you can install My Lab Control as a systemd service:
+
+1. **Install as system service**:
+```bash
+sudo ./install-service.sh
+```
+
+2. **Create/edit configuration**:
+```bash
+sudo nano /opt/mylabcontrol/config.json
+```
+
+3. **Start the service**:
+```bash
+sudo systemctl start mylabcontrol
+sudo systemctl status mylabcontrol
+```
+
+4. **View logs**:
+```bash
+sudo journalctl -u mylabcontrol -f
+```
+
+**Service Management Commands:**
+```bash
+sudo systemctl start mylabcontrol      # Start service
+sudo systemctl stop mylabcontrol       # Stop service
+sudo systemctl restart mylabcontrol    # Restart service
+sudo systemctl status mylabcontrol     # Check status
+sudo systemctl enable mylabcontrol     # Enable auto-start on boot
+sudo systemctl disable mylabcontrol    # Disable auto-start
+sudo journalctl -u mylabcontrol -f     # Follow logs
+```
+
+**Uninstall Service:**
+```bash
+sudo ./uninstall-service.sh
+```
+
+**Service Features:**
+- Runs as dedicated `mylabcontrol` user for security
+- Automatic restart on failure
+- Systemd logging integration
+- Secure file permissions and process isolation
+- Auto-start on system boot (when enabled)
+- Service installed to `/opt/mylabcontrol`
+
 ## Configuration
 
 The application uses `config.json` for configuration. Start by copying the example:

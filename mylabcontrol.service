@@ -1,0 +1,37 @@
+[Unit]
+Description=My Lab Control - Host Power Status Monitor
+Documentation=https://github.com/yourusername/mycontrol
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+User=mylabcontrol
+Group=mylabcontrol
+WorkingDirectory=/opt/mylabcontrol
+ExecStart=/opt/mylabcontrol/control.sh start
+ExecStop=/opt/mylabcontrol/control.sh stop
+ExecReload=/opt/mylabcontrol/control.sh restart
+PIDFile=/opt/mylabcontrol/mycontrol.pid
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mylabcontrol
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/mylabcontrol
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+Environment=MYCONTROL_INTERACTIVE=false
+
+[Install]
+WantedBy=multi-user.target
