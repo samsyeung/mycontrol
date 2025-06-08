@@ -281,10 +281,12 @@ def start_ssh_terminal(hostname):
         return jsonify({'success': False, 'message': 'Host not found in configuration'}), 404
     
     ssh_host = target_host.get('ssh_host')
+    ssh_username = target_host.get('ssh_username')
+    
     if not ssh_host:
         return jsonify({'success': False, 'message': 'No SSH host configured for this server'}), 400
     
-    result = get_terminal_manager().start_ssh_terminal(hostname, ssh_host)
+    result = get_terminal_manager().start_ssh_terminal(hostname, ssh_host, ssh_username)
     
     if result['success']:
         return jsonify(result), 200

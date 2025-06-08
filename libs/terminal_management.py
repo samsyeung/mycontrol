@@ -45,7 +45,7 @@ class TerminalManager:
             except ProcessLookupError:
                 pass  # Process already dead
     
-    def start_ssh_terminal(self, hostname, ssh_host):
+    def start_ssh_terminal(self, hostname, ssh_host, ssh_username=None):
         """Start a ttyd SSH terminal"""
         if not self._check_ttyd_available():
             return {'success': False, 'message': 'ttyd not installed. Please install ttyd to use SSH terminals.'}
@@ -57,19 +57,34 @@ class TerminalManager:
         self._kill_existing_process(hostname, self.ssh_processes)
         
         try:
-            # Start ttyd with SSH to the target host
-            cmd = [
-                'ttyd',
-                '--port', str(terminal_port),
-                '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
-                '--once',  # Close after one client disconnects
-                '--writable',  # Allow keyboard input
-                'ssh', 
-                '-o', 'StrictHostKeyChecking=no',
-                '-o', 'UserKnownHostsFile=/dev/null',
-                '-o', 'LogLevel=ERROR',
-                ssh_host
-            ]
+            if ssh_username:
+                # Use configured username, but still prompt for password
+                cmd = [
+                    'ttyd',
+                    '--port', str(terminal_port),
+                    '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
+                    '--once',  # Close after one client disconnects
+                    '--writable',  # Allow keyboard input
+                    'ssh', 
+                    '-o', 'StrictHostKeyChecking=no',
+                    '-o', 'UserKnownHostsFile=/dev/null',
+                    '-o', 'LogLevel=ERROR',
+                    f'{ssh_username}@{ssh_host}'
+                ]
+            else:
+                # Fallback to manual authentication (original behavior)
+                cmd = [
+                    'ttyd',
+                    '--port', str(terminal_port),
+                    '--interface', '0.0.0.0',  # Bind to all interfaces for remote access
+                    '--once',  # Close after one client disconnects
+                    '--writable',  # Allow keyboard input
+                    'ssh', 
+                    '-o', 'StrictHostKeyChecking=no',
+                    '-o', 'UserKnownHostsFile=/dev/null',
+                    '-o', 'LogLevel=ERROR',
+                    ssh_host
+                ]
             
             process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
@@ -93,7 +108,7 @@ class TerminalManager:
                     'message': f'Failed to start terminal: {stderr.decode()}'
                 }
             
-            logger.info(f"Started SSH terminal for {hostname} on port {terminal_port}")
+            logger.info(f"Started SSH terminal for {hostname} on port {terminal_port} with username: {ssh_username or 'manual'}")
             
             return {
                 'success': True,

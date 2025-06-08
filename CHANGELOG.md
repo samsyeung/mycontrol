@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2025-01-08
+
+### Enhanced
+- **SSH terminal user experience** - Automatic username from configuration
+  - SSH terminals now use configured `ssh_username` automatically
+  - Users only need to enter password, username is pre-filled from config
+  - Maintains security by still requiring interactive password authentication
+  - Falls back to manual authentication if no username configured
+  - Improves convenience while preserving security best practices
+
 ## [1.5.0] - 2025-01-08
 
 ### Added
